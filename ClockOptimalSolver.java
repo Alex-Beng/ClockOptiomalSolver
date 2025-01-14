@@ -313,11 +313,33 @@ public class ClockOptimalSolver {
 
     private static final String[] turns={"UR","DR","DL","UL","U","R","D","L","ALL"};
 
+    public static void help() {
+        System.out.println("Usage: java ClockOptimalSolver [clock status]");
+        System.out.println("    clock status: 14 numbers in [0,12), which represent the clock's status");
+        System.out.println("    e.g. java ClockOptimalSolver 0 1 0  0 0 0  0 0 0  0 0 0 0 ");
+        System.out.println("    the order, x mean not-needed: ");
+        System.out.println("      1 2 3      x  10 x");
+        System.out.println("      4 5 6      11 12 13");
+        System.out.println("      7 8 9      x  14 x");
+        System.out.println("      (front) y2 (back)");
+    }
+
     public static void main(String[] args) {
         StringBuilder scramble = new StringBuilder();
 
         java.util.Random r = new java.util.Random();
-        int[] clk_state = ClockSolver.randomState(r);
+        if (args.length == 0 || args.length != 14) {
+            System.out.println("    args.length = " + args.length);
+            help();
+            return;
+        }
+
+        // int[] clk_state = ClockSolver.randomState(r);
+        int[] clk_state = new int[14];
+        for (int i=0; i<14; i++) {
+            clk_state[i] = Integer.parseInt(args[i]);
+        }
+
         int[] solution = new int[18];
         ClockSolver.solution(clk_state, solution);
         
